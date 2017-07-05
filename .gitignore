@@ -1,0 +1,3 @@
+vendor/
+rootfs/opt/shaleapptest/sbin
+.DS_Store

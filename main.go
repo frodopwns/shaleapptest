@@ -8,6 +8,11 @@ import (
 	"sync"
 )
 
+const (
+	templateDir = "/opt/shaleapptest/templates"
+	homeDir     = "/opt/shaleapptest"
+)
+
 // implementation of Handler interface that renders a template
 type templateHandler struct {
 	once     sync.Once
@@ -18,7 +23,7 @@ type templateHandler struct {
 // ServeHTTP handles the HTTP request.
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
-		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
+		t.templ = template.Must(template.ParseFiles(filepath.Join(templateDir, t.filename)))
 	})
 	t.templ.Execute(w, r)
 }
