@@ -1,0 +1,28 @@
+input { display: block; }
+ul    { list-style: none; }
+li span { float: right }
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+#messages {
+    min-height: 10vh;
+    height: 60vh;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+#messages li:nth-child(odd) {
+background-color: #eee;  
+}
+
+#messages li:nth-child(even) {
+background-color: #fff;  
+}

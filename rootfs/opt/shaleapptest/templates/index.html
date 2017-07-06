@@ -1,9 +1,68 @@
 <html>
-    <head>
-        <title>ShaleApp chat app</title>
-    </head>
-    <body>
-        <h1>Hellow world</h1>
-        <p>Lorem ipsum dolor.</p>
-    </body>
+  <head>
+    <title>ShaleApp chat app</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main id="app">
+
+    <div class="card">
+      <div id="chat-messages" class="card-content">
+        <ul id="messages"></ul>
+      </div>
+    </div>
+
+    <form id="chatbox">
+      <textarea id="message"></textarea>
+      <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+          <i class="material-icons right">send</i>
+      </button>
+    </form>
+
+    <script src="/static/jquery.min.js"></script>
+    <script>
+      $(function(){
+        var socket = null;
+        var msgBox = $("#chatbox textarea");
+        var messages = $("#messages");
+        $("#chatbox").submit(function(){
+          if (!msgBox.val()) return false;
+          if (!socket) {
+            alert("Error: There is no socket connection.");
+            return false;
+          }
+          socket.send(JSON.stringify({"message": msgBox.val()}));
+          msgBox.val("");
+          return false;
+        });
+        if (!window["WebSocket"]) {
+          alert("Error: Your browser does not support web sockets.")
+        } else {
+          socket = new WebSocket("ws://{{.Host}}/chat");
+          socket.onclose = function() {
+            alert("Connection has been closed.");
+          }
+          socket.onmessage = function(e) {
+            var msg = JSON.parse(e.data);
+            var item = $("<li>");
+            item.append($("<strong>").append(msg.id + "<br/>" + msg.time + ": "));
+            item.append($("<span>").text(msg.message));
+            messages.append(item);
+          }
+        }
+
+        $("#message").keypress(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                $("#chatbox").submit();
+                return true;
+            }
+        });
+
+      });
+    </script>
+    </main>
+  </body>
 </html>
