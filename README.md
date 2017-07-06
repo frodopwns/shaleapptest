@@ -1,6 +1,6 @@
 # ShaleAppTest
 
-A sample application to demonstrate Golang aptitude. The app uses and channels and websockets to provide a real-time experience.
+A sample application to demonstrate Golang aptitude. The app uses channels and websockets to provide a real-time experience.
 
 ## To run
 
